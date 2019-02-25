@@ -1,0 +1,96 @@
+{% extends 'login.html' %}
+{% block title %}
+    <title>注册界面</title>
+{% endblock %}
+{% block tips %}
+    <h4 style="margin: 20px auto">请输入注册信息！</h4>
+{% endblock %}
+{% block content %}
+    {#    <div class="input-group input-group-lg">#}
+    {#        <span class="input-group-addon" id="sizing-addon1">用户名</span>#}
+    {#        <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1" name="username">#}
+    {#    </div>#}
+    {#    <div class="input-group input-group-lg">#}
+    {#        <span class="input-group-addon" id="sizing-addon1">密码</span>#}
+    {#        <input type="password" class="form-control" placeholder="password" aria-describedby="sizing-addon1" name="password">#}
+    {#    </div>#}
+    {#    <span id="error"></span>#}
+    {#                <div class="input-group input-group-lg">#}
+    {#                    <span class="input-group-addon" id="sizing-addon1">登陆</span>#}
+    {#    <span class="input-group-addon" id="register" style="cursor: pointer">注册</span>#}
+    <div class="form" id="base">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="">{{ field.label }}</label>
+                {{ field }} <span style="color:red" class="error pull-right" id="{{ field.name }}"></span>
+            </div>
+        {% endfor %}
+        <div style="margin-top: 20px">
+            <input type="reset" class="btn btn-default pull-left">
+            <input type="submit" class="btn btn-success pull-right" id="btn">
+        </div>
+
+    </div>
+
+{#    <div class="modal fade" tabindex="-1" role="dialog">#}
+{#        <div class="modal-dialog" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+{#                            aria-hidden="true">&times;</span></button>#}
+{#                    <h4 class="modal-title">Modal title</h4>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    <p>One fine body&hellip;</p>#}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+{#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+{#                </div>#}
+{#            </div><!-- /.modal-content -->#}
+{#        </div><!-- /.modal-dialog -->#}
+{#    </div><!-- /.modal -->#}
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        $('.btn').click(function () {
+            datainfo = {
+            {% for field in form %}
+                {{ field.name }}: $("[name={{ field.name }}]").val(),
+            {% endfor %}
+        }
+            $.ajax({
+                url: '/register/',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(datainfo),
+                success: function (response) {
+                    if (response.info) {
+                        $('.error').html('');
+                        $('.error').each(function () {
+                            console.log(response.info.__all__);
+                            if (response.info[$(this).attr('id')]) {
+                                $(this).html(response.info[$(this).attr('id')]);
+                            }
+
+                        });
+                        $('#re_pwd').html(response.info.__all__)
+                    } else {
+                        alert("注册成功");
+                        setTimeout(function () {
+                            location.href = '/login/'
+                        }, 500)
+                    }
+
+                },
+                error: function () {
+
+                }
+
+            })
+        })
+    </script>
+{% endblock %}

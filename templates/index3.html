@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% block title %}
+    出版社系统
+{% endblock %}
+{% block content %}
+    <a href="/add3/" class="btn btn-primary" style="margin-bottom: 10px">添加出版社</a>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>出版社名称</th>
+            <th>邮箱</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for publish in publish_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ publish.pname }}</td>
+                <td>{{ publish.email}}</td>
+
+                <td>
+                    <a href="/delete3/{{ publish.pk }}" class="btn btn-danger btn-sm">删除</a>
+                    <a href="/update3/{{ publish.pk }}" class="btn btn-warning btn-sm">编辑</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+{% block script %}
+    <script>
+
+    </script>
+{% endblock %}

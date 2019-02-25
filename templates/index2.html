@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% block title %}
+        作者管理系统
+{% endblock %}
+{% block content %}
+    <a href="/add2/" class="btn btn-primary" style="margin-bottom: 10px">添加作者</a>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>作者姓名</th>
+            <th>年龄</th>
+            <th>电话号码</th>
+            <th>地址</th>
+            <th>tel</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for author in author_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ author.aname }}</td>
+                <td>{{ author.age }}</td>
+                <td>{{ author.phone }}</td>
+                <td>{{ author.a_info.addr }}</td>
+                <td>{{ author.a_info.tel }}</td>
+
+{#                <td>#}
+{#                    {% for author in book.authors.all %}#}
+{#                        <span>{{ author.aname }}</span>#}
+{#                        {% if not forloop.last %}#}
+{#                            ,#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+{##}
+{#                </td>#}
+
+                <td>
+                    <a href="/delete2/{{ author.pk }}" class="btn btn-danger btn-sm">删除</a>
+                    <a href="/update2/{{ author.pk }}" class="btn btn-warning btn-sm">编辑</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

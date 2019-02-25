@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+{% extends 'add.html' %}
+{% block title %}
+    作者管理系统
+{% endblock %}
+{% block content %}
+    <form action="" method="post" novalidate>
+                {% csrf_token %}
+                  {% for field in form %}
+                        <div class="form-group">
+                             <label for="title">{{ field.label }}</label>
+                             {{ field }}
+                             <span>{{ field.errors.0 }}</span>
+                        </div>
+                 {% endfor %}
+
+
+                <input type="submit" value="提交" class="btn btn-default pull-right">
+
+</form>
+
+{% endblock %}

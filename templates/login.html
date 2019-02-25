@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>登陆界面</title>
+    {% endblock %}
+
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <script src="/static/js/jQuery.js"></script>
+    <style>
+        .input-group {
+            margin: 5px auto;
+        }
+        .container{
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 ">
+            {% csrf_token %}
+            {% block tips %}
+                <h4 style="margin: 20px auto">您好，请先登录！</h4>
+            {% endblock %}
+
+            {% block content %}
+                <div class="input-group input-group-lg" id="base_user">
+                    <span class="input-group-addon" id="sizing-addon1">用户名</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1"
+                           name="username">
+                </div>
+                <div class="input-group input-group-lg " id="base_pwd">
+                    <span class="input-group-addon" id="sizing-addon1">密码</span>
+                    <input type="password" class="form-control" placeholder="password" aria-describedby="sizing-addon1"
+                           name="password">
+                </div>
+                <div class="input-group input-group-lg" id="base_valid">
+                    <span class="input-group-addon" id="sizing-addon1">验证码</span>
+                    <input type="password" class="form-control" placeholder="validcode" aria-describedby="sizing-addon1"
+                           name="validcode" >
+                </div>
+                <img width="555" height="50" src="/get_valid_img/" alt="" id="img" style="margin-bottom: 10px">
+                <span id="error"></span>
+                {#                <div class="input-group input-group-lg">#}
+                {#                    <span class="input-group-addon" id="sizing-addon1">登陆</span>#}
+                <a href="/register/" class="input-group-addon" id="register" style="cursor: pointer">注册</a>
+                <span class="input-group-addon" id="login" style="cursor: pointer">登陆</span>
+            {% endblock %}
+
+
+
+            {#                    <input type="submit" class="form-control " placeholder="register" aria-describedby="sizing-addon1" value="注册" >#}
+            {#                    <input type="submit" class="form-control" placeholder="login" aria-describedby="sizing-addon1" value="登陆" >#}
+            {#                </div>#}
+
+        </div>
+
+    </div>
+</div>
+</body>
+{% block script %}
+    <script>
+    $('#login').click(function () {
+        $.ajax({
+            url: '/login/',
+            type: 'post',
+            data: {
+                username: $("[name=username]").val(),
+                password: $("[name=password]").val(),
+                validcode:$("[name=validcode]").val(),
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+            },
+            success: function (response) {
+                if (JSON.parse(response).error) {
+                    $("#error").html(JSON.parse(response).error).css("color", "red");
+                    if (JSON.parse(response).error == '用户名或密码错误'){
+
+                        $('#base_user,#base_pwd').addClass('has-error')
+                    }else if(JSON.parse(response).error == '验证码输入错误'){
+                        $('#base_valid').addClass('has-error')
+                    }
+                } else {
+                    location.href = "/index/"
+                }
+
+            }
+        })
+    })
+     //  验证码刷新
+    $("#img").click(function () {
+        this.src+="?"
+    })
+
+</script>
+{% endblock %}
+
+</html>

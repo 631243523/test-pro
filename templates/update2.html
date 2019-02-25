@@ -1,0 +1,34 @@
+{% extends 'add.html' %}
+{% block title %}
+    作者管理系统
+{% endblock %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="aname">作者姓名</label>
+            <input class="form-control" value={{ author.aname }} type="text" name="aname" id="aname">
+        </div>
+        <div class="form-group">
+            <label for="age">年龄</label>
+            <input class="form-control" value={{ author.age }} type="text" name="age" id="age">
+        </div>
+        <div class="form-group">
+            <label for="phone">电话号</label>
+            <input class="form-control" value={{ author.phone }} type="text" name="phone" id="phone">
+        </div>
+       <div class="form-group">
+            <label for="addr">地址</label>
+            <input class="form-control" value={{ author.a_info.addr }} type="text" name="addr" id="addr">
+        </div>
+        <div class="form-group">
+            <label for="tel">tel</label>
+            <input class="form-control" value={{ author.a_info.tel }} type="text" name="tel" id="tel">
+        </div>
+
+        <input type="submit" value="提交" class="btn btn-default pull-right">
+
+    </form>
+
+
+{% endblock %}

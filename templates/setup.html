@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <script src="/static/js/jQuery.js"></script>
+</head>
+<body>
+{#<form action="/give/" method="post" enctype="multipart/form-data">#}
+{#    {% csrf_token %}#}
+{#    姓名:<input type="text" name="filename">#}
+{#    文件:<input type="file" name="file_obj">#}
+{#    <button>提交</button>#}
+
+<h4>4 Ajax形式的文件上传</h4>
+
+<div>
+    姓名<input type="text" id="user">
+    文件<input type="file" name="file_obj" id="file">
+    <input type="button" class="filebtn" value="提交">
+    <p class="msg"></p>
+</div>
+
+
+
+</form>
+<script>
+    $(".filebtn").click(function () {
+          {# 第一步导入实例变量FormData#}
+          var formdata=new FormData();
+          formdata.append("file_obj",$("#file")[0].files[0]);
+          formdata.append("user",$("#user").val());
+
+          $.ajax({
+              url:"/give/",
+              type:"post",
+              // Ajax上传文件必备参数
+              processData: false ,    // 不处理数据
+              contentType: false,    // 不设置内容类型
+              data:formdata,
+              success:function (response) {
+                  console.log(response);
+                  if (response=="ok"){
+                      $(".msg").html("提交成功！")
+                  }
+              }
+          })
+
+      })
+</script>
+
+</body>
+</html>

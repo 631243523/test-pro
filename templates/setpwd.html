@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <script src="/static/js/jQuery.js"></script>
+    <style>
+        .input-group{
+            margin: 5px auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-3 " >
+                {% csrf_token %}
+                <h4 style="margin: 20px auto">请输入修改后的密码!</h4>
+
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon" id="sizing-addon1">密码</span>
+                     <input type="password" class="form-control" placeholder="请输入密码" aria-describedby="sizing-addon1" name="password1">
+                </div>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon" id="sizing-addon1">确认密码</span>
+                    <input type="password" class="form-control" placeholder="二次输入密码" aria-describedby="sizing-addon1" name="password2">
+                </div>
+                <span id="error"></span>
+{#                <div class="input-group input-group-lg">#}
+{#                    <span class="input-group-addon" id="sizing-addon1">登陆</span>#}
+{#                    <span  class="input-group-addon" id="register" style="cursor: pointer">注册</span>#}
+{#                    <span  class="input-group-addon" id="login" style="cursor: pointer">登陆</span>#}
+                    <span  class="input-group-addon" id="sub" style="cursor: pointer">确认修改</span>
+{#                    <input type="submit" class="form-control " placeholder="register" aria-describedby="sizing-addon1" value="注册" >#}
+{#                    <input type="submit" class="form-control" placeholder="login" aria-describedby="sizing-addon1" value="登陆" >#}
+{#                </div>#}
+
+        </div>
+
+    </div>
+</div>
+<script>
+    $('#sub').click(function () {
+        $.ajax({
+            url:'/setpwd/',
+            type:'post',
+            data:{
+                password1:$("[name=password1]").val(),
+                password2:$("[name=password2]").val(),
+                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val(),
+            },
+            success:function (response) {
+                if (JSON.parse(response).error){
+                    $("#error").html(JSON.parse(response).error).css("color","red");
+                }else{
+                     location.href="/index/"
+                }
+
+            }
+        })
+    })
+</script>
+</body>
+</html>
